@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, Calendar, User, Phone, MapPin, Package } from 'lucide-react';
-import { useCart, CartItem } from '../context/CartContext';
+import { useCart, CartItem, getItemPrice } from '../context/CartContext';
+
+const formatCOP = (value: number) =>
+  new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value);
 
 interface OrderFormProps {
   onClose: () => void;
 }
 
 export default function OrderForm({ onClose }: OrderFormProps) {
-  const { items, clearCart } = useCart();
+  const { items, totalPrice, clearCart } = useCart();
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({
     name: '',
@@ -17,7 +20,6 @@ export default function OrderForm({ onClose }: OrderFormProps) {
     deliveryDate: '',
   });
 
-  // Calculate minimum delivery date (2 business days from now)
   useEffect(() => {
     const minDate = getMinimumDeliveryDate();
     setForm((prev) => ({ ...prev, deliveryDate: minDate }));
@@ -26,19 +28,16 @@ export default function OrderForm({ onClose }: OrderFormProps) {
   const getMinimumDeliveryDate = () => {
     const today = new Date();
     const minDate = new Date(today);
-    minDate.setDate(today.getDate() + 2); // 2 days minimum for production
+    minDate.setDate(today.getDate() + 2);
     return minDate.toISOString().split('T')[0];
   };
 
   const getAvailableDates = () => {
     const dates: { value: string; label: string }[] = [];
     const today = new Date();
-
-    // Start from 2 days from now
     const startDate = new Date(today);
     startDate.setDate(today.getDate() + 2);
 
-    // Generate next 14 days
     for (let i = 0; i < 14; i++) {
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);
@@ -62,7 +61,12 @@ export default function OrderForm({ onClose }: OrderFormProps) {
   const generateWhatsAppMessage = () => {
     const date = getAvailableDates().find(d => d.value === form.deliveryDate);
     const itemsList = items
-      .map((item: CartItem) => `  - ${item.product.name} x${item.quantity} (${item.product.weight})`)
+      .map((item: CartItem) => {
+        const unitPrice = getItemPrice(item.quantity);
+        const subtotal = unitPrice * item.quantity;
+        const bulkNote = item.quantity > 5 ? ' ✓ precio mayoreo' : '';
+        return `  - ${item.product.name} x${item.quantity} (${item.product.weight}) = ${formatCOP(subtotal)}${bulkNote}`;
+      })
       .join('\n');
 
     const message = `¡Hola J&C PAPAS! Quiero hacer un pedido:
@@ -74,6 +78,8 @@ Dirección: ${form.address}
 
 *PEDIDO*
 ${itemsList}
+
+*TOTAL: ${formatCOP(totalPrice)}*
 
 *FECHA DE ENTREGA*
 ${date?.label || form.deliveryDate}
@@ -168,18 +174,37 @@ _Enviado desde la web de J&C PAPAS_`;
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Order summary */}
-              <div className="bg-stone-50 rounded-xl p-4 mb-6">
+              <div className="bg-stone-50 rounded-xl p-4 mb-2">
                 <h4 className="font-semibold text-stone-800 mb-3 flex items-center gap-2">
                   <Package size={18} className="text-amber-500" />
                   Resumen del pedido
                 </h4>
                 <div className="space-y-2">
-                  {items.map((item: CartItem) => (
-                    <div key={item.product.id} className="flex justify-between text-sm">
-                      <span className="text-stone-600">{item.product.name}</span>
-                      <span className="font-semibold text-stone-800">x{item.quantity}</span>
-                    </div>
-                  ))}
+                  {items.map((item: CartItem) => {
+                    const unitPrice = getItemPrice(item.quantity);
+                    const subtotal = unitPrice * item.quantity;
+                    const isBulk = item.quantity > 5;
+                    return (
+                      <div key={item.product.id} className="flex justify-between items-start text-sm gap-2">
+                        <div className="flex-1">
+                          <span className="text-stone-700 font-medium">{item.product.name}</span>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-stone-500 text-xs">x{item.quantity} · {formatCOP(unitPrice)} c/u</span>
+                            {isBulk && (
+                              <span className="text-xs bg-green-100 text-green-700 font-semibold px-1.5 py-0.5 rounded-full">
+                                Mayoreo
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <span className="font-bold text-stone-800 whitespace-nowrap">{formatCOP(subtotal)}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="mt-3 pt-3 border-t border-stone-200 flex justify-between">
+                  <span className="font-bold text-stone-800">Total</span>
+                  <span className="font-extrabold text-stone-900 text-base">{formatCOP(totalPrice)}</span>
                 </div>
               </div>
 

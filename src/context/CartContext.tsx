@@ -1,5 +1,9 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
+export const PRICE_NORMAL = 29900;
+export const PRICE_BULK = 25000;
+export const BULK_THRESHOLD = 5;
+
 export interface Product {
   id: string;
   name: string;
@@ -19,11 +23,17 @@ interface CartContextType {
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
   totalItems: number;
+  totalPrice: number;
+  getItemPrice: (quantity: number) => number;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
+
+export function getItemPrice(quantity: number): number {
+  return quantity > BULK_THRESHOLD ? PRICE_BULK : PRICE_NORMAL;
+}
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -62,10 +72,25 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const clearCart = () => setItems([]);
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+  const totalPrice = items.reduce(
+    (sum, item) => sum + getItemPrice(item.quantity) * item.quantity,
+    0
+  );
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, updateQuantity, clearCart, totalItems, isOpen, setIsOpen }}
+      value={{
+        items,
+        addItem,
+        removeItem,
+        updateQuantity,
+        clearCart,
+        totalItems,
+        totalPrice,
+        getItemPrice,
+        isOpen,
+        setIsOpen,
+      }}
     >
       {children}
     </CartContext.Provider>
