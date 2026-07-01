@@ -1,54 +1,55 @@
-import { ShoppingCart, Check } from 'lucide-react';
+import { Plus, Check } from 'lucide-react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import { useCart, Product } from '../context/CartContext';
 
-const products = [
-    {
+const productsData: (Product & { description: string; tag: string; tagColor: string; benefits: string[] })[] = [
+  {
+    id: 'papa-9x9',
     name: 'Papa Francesa Normal 9x9',
     image: '/papas9x9.png',
     description: 'Corte clásico y uniforme, ideal para lograr papas crocantes por fuera y suaves por dentro.',
     weight: '2.500 g',
-    price: '$29.900',
-    tag: '',
+    tag: 'Clásico',
     tagColor: 'bg-amber-400 text-stone-900',
     benefits: ['Precocción perfecta', 'Congelado IQF', 'Lista en 5 min'],
   },
   {
+    id: 'papa-12x12',
     name: 'Papa Francesa Normal 12x12',
     image: '/papas12x12.png',
     description: 'Corte más grueso, perfecto para una experiencia de sabor más intensa y una textura más artesanal.',
     weight: '2.500 g',
-    price: '$29.900',
-    tag: '',
+    tag: 'Artesanal',
     tagColor: 'bg-stone-800 text-white',
     benefits: ['Con cáscara natural', 'Sabor intenso', 'Textura rústica'],
   },
   {
+    id: 'papa-casco',
     name: 'Papa Casco con Cáscara',
     image: '/cascos.png',
     description: 'Corte tipo casco conservando la cáscara natural de la papa, ofreciendo un sabor auténtico y una presentación rústica.',
     weight: '2.500 g',
-    price: '$29.900',
-    tag: '',
+    tag: 'Especial',
     tagColor: 'bg-green-700 text-white',
     benefits: ['Corte especial', 'Retiene salsas', 'Presentación premium'],
   },
-    {
+  {
+    id: 'papa-12x12-cascara',
     name: 'Papa Francesa con Cáscara 12x12',
     image: '/papas12x12cascara.png',
     description: 'Corte grueso con cáscara, ideal para quienes buscan una papa más robusta, crocante y con estilo artesanal.',
     weight: '2.500 g',
-    price: '$29.900',
-    tag: '',
+    tag: 'Versátil',
     tagColor: 'bg-orange-500 text-white',
     benefits: ['Multiformato', 'Ideal gastronomía', 'Cocción rápida'],
   },
   {
+    id: 'papa-9x9-cascara',
     name: 'Papa Francesa con Cáscara 9x9',
     image: '/papas9x9cascara.png',
     description: 'Pequeños cubos artesanales ideales para bowls, ensaladas calientes, guarniciones y platillos creativos.',
     weight: '2.500 g',
-    price: '$29.900',
-    tag: '',
+    tag: 'Versátil',
     tagColor: 'bg-orange-500 text-white',
     benefits: ['Multiformato', 'Ideal gastronomía', 'Cocción rápida'],
   },
@@ -56,9 +57,12 @@ const products = [
 
 export default function Products() {
   const { ref, isVisible } = useIntersectionObserver();
+  const { addItem, items } = useCart();
 
-  const scrollToContact = () => {
-    document.querySelector('#contacto')?.scrollIntoView({ behavior: 'smooth' });
+  const isInCart = (productId: string) => items.some((item) => item.product.id === productId);
+
+  const handleAddToCart = (product: Product) => {
+    addItem(product);
   };
 
   return (
@@ -79,17 +83,17 @@ export default function Products() {
         </div>
 
         {/* Product grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((product, i) => (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          {productsData.map((product, i) => (
             <div
-              key={product.name}
+              key={product.id}
               className={`group bg-white border border-stone-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-400 flex flex-col
                 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}
               `}
               style={{ transitionDelay: `${i * 100 + 100}ms` }}
             >
               {/* Image */}
-              <div className="relative overflow-hidden h-auto">
+              <div className="relative overflow-hidden h-40">
                 <img
                   src={product.image}
                   alt={product.name}
@@ -102,39 +106,47 @@ export default function Products() {
               </div>
 
               {/* Body */}
-              <div className="p-5 flex flex-col flex-1">
-                <h3 className="font-montserrat font-extrabold text-lg font-bold text-stone-800 mb-2">{product.name}</h3>
-                <p className="text-stone-500 text-sm leading-relaxed mb-3 flex-1">{product.description}</p>
+              <div className="p-4 flex flex-col flex-1">
+                <h3 className="font-montserrat font-extrabold text-sm font-bold text-stone-800 mb-1">{product.name}</h3>
+                <p className="text-stone-500 text-xs leading-relaxed mb-2 flex-1 line-clamp-2">{product.description}</p>
 
                 {/* Weight */}
-                {/* Weight & Price */}
-<div className="flex items-center justify-between mb-4">
-  <div className="bg-amber-50 text-amber-700 text-xs font-semibold px-3 py-1.5 rounded-lg">
-    Presentación: {product.weight}
-  </div>
-
-  <div className="text-2xl font-extrabold text-amber-500">
-    {product.price}
-  </div>
-</div>
+                <div className="bg-amber-50 text-amber-700 text-xs font-semibold px-2 py-1 rounded-lg inline-block mb-3 w-fit">
+                  {product.weight}
+                </div>
 
                 {/* Benefits */}
-                <ul className="space-y-1.5 mb-5">
-                  {product.benefits.map((b) => (
-                    <li key={b} className="flex items-center gap-2 text-xs text-stone-600">
-                      <Check size={13} className="text-green-600 shrink-0" />
+                <ul className="space-y-1 mb-4">
+                  {product.benefits.slice(0, 2).map((b) => (
+                    <li key={b} className="flex items-center gap-1.5 text-xs text-stone-600">
+                      <Check size={12} className="text-green-600 shrink-0" />
                       {b}
                     </li>
                   ))}
                 </ul>
 
-                {/* CTA */}
+                {/* Add to cart CTA */}
                 <button
-                  onClick={scrollToContact}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-stone-800 text-white text-sm font-semibold rounded-xl hover:bg-amber-500 hover:text-stone-900 transition-all duration-300"
+                  onClick={() => handleAddToCart(product)}
+                  disabled={isInCart(product.id)}
+                  className={`w-full flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded-xl transition-all duration-300
+                    ${isInCart(product.id)
+                      ? 'bg-green-100 text-green-700 cursor-default'
+                      : 'bg-stone-800 text-white hover:bg-amber-500 hover:text-stone-900'
+                    }
+                  `}
                 >
-                  <ShoppingCart size={15} />
-                  Pedir ahora
+                  {isInCart(product.id) ? (
+                    <>
+                      <Check size={15} />
+                      En el carrito
+                    </>
+                  ) : (
+                    <>
+                      <Plus size={15} />
+                      Agregar
+                    </>
+                  )}
                 </button>
               </div>
             </div>
@@ -143,13 +155,7 @@ export default function Products() {
 
         {/* Bottom note */}
         <p className={`text-center text-stone-400 text-sm mt-10 transition-all duration-700 delay-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-          <button
-            onClick={scrollToContact}
-            className="text-amber-600 font-semibold hover:underline"
-          >
-            Contáctanos
-          </button>{' '}
-          
+          Agrega productos al carrito y realiza tu pedido
         </p>
       </div>
     </section>
