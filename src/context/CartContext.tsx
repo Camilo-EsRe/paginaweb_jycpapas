@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 export const PRICE_NORMAL = 29900;
-export const PRICE_BULK = 25000;
-export const BULK_THRESHOLD = 5;
+export const PRICE_BULK = 24638;
+export const BULK_THRESHOLD = 10;
 
 export interface Product {
   id: string;

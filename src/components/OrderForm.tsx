@@ -96,7 +96,7 @@ _Enviado desde la web de J&C PAPAS_`;
     e.preventDefault();
 
     const message = generateWhatsAppMessage();
-    const whatsappUrl = `https://wa.me/573004567890?text=${message}`;
+    const whatsappUrl = `https://wa.me/573012384665?text=${message}`;
 
     window.open(whatsappUrl, '_blank');
 
@@ -124,8 +124,10 @@ _Enviado desde la web de J&C PAPAS_`;
               Completa tus datos para enviar el pedido por WhatsApp
             </p>
           </div>
+          {/* CORRECCIÓN 1: Se añade aria-label para solucionar axe/name-role-value */}
           <button
             onClick={onClose}
+            aria-label="Cerrar formulario"
             className="p-2 hover:bg-white rounded-full transition-colors"
           >
             <X size={20} className="text-stone-500" />
@@ -154,7 +156,7 @@ _Enviado desde la web de J&C PAPAS_`;
                   Registrate y controla tu stock, pedidos y proveedores desde una sola plataforma.
                 </p>
                 <a
-                  href="https://wa.me/573004567890?text=Hola%20J%26C%20PAPAS%2C%20me%20interesa%20el%20sistema%20de%20inventario%20para%20mi%20negocio"
+                  href="https://wa.me/573012384665?text=Hola%20J%26C%20PAPAS%2C%20me%20interesa%20el%20sistema%20de%20inventario%20para%20mi%20negocio"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-stone-900 font-bold px-6 py-3 rounded-xl transition-colors"
@@ -211,11 +213,12 @@ _Enviado desde la web de J&C PAPAS_`;
               {/* Customer info */}
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="flex items-center gap-2 text-stone-700 text-sm font-semibold mb-2">
+                  <label htmlFor="customerName" className="flex items-center gap-2 text-stone-700 text-sm font-semibold mb-2">
                     <User size={16} className="text-amber-500" />
                     Nombre completo *
                   </label>
                   <input
+                    id="customerName"
                     name="name"
                     value={form.name}
                     onChange={handleChange}
@@ -225,11 +228,12 @@ _Enviado desde la web de J&C PAPAS_`;
                   />
                 </div>
                 <div>
-                  <label className="flex items-center gap-2 text-stone-700 text-sm font-semibold mb-2">
+                  <label htmlFor="customerPhone" className="flex items-center gap-2 text-stone-700 text-sm font-semibold mb-2">
                     <Phone size={16} className="text-amber-500" />
                     Teléfono *
                   </label>
                   <input
+                    id="customerPhone"
                     name="phone"
                     value={form.phone}
                     onChange={handleChange}
@@ -242,11 +246,12 @@ _Enviado desde la web de J&C PAPAS_`;
               </div>
 
               <div>
-                <label className="flex items-center gap-2 text-stone-700 text-sm font-semibold mb-2">
+                <label htmlFor="customerAddress" className="flex items-center gap-2 text-stone-700 text-sm font-semibold mb-2">
                   <MapPin size={16} className="text-amber-500" />
                   Dirección de entrega *
                 </label>
                 <input
+                  id="customerAddress"
                   name="address"
                   value={form.address}
                   onChange={handleChange}
@@ -257,11 +262,13 @@ _Enviado desde la web de J&C PAPAS_`;
               </div>
 
               <div>
-                <label className="flex items-center gap-2 text-stone-700 text-sm font-semibold mb-2">
+                {/* CORRECCIÓN 2: Se añade htmlFor="deliveryDate" para solucionar axe/forms */}
+                <label htmlFor="deliveryDate" className="flex items-center gap-2 text-stone-700 text-sm font-semibold mb-2">
                   <Calendar size={16} className="text-amber-500" />
                   Fecha de entrega *
                 </label>
                 <select
+                  id="deliveryDate"
                   name="deliveryDate"
                   value={form.deliveryDate}
                   onChange={handleChange}
@@ -280,10 +287,11 @@ _Enviado desde la web de J&C PAPAS_`;
               </div>
 
               <div>
-                <label className="text-stone-700 text-sm font-semibold mb-2 block">
+                <label htmlFor="customerComments" className="text-stone-700 text-sm font-semibold mb-2 block">
                   Comentarios adicionales
                 </label>
                 <textarea
+                  id="customerComments"
                   name="comments"
                   value={form.comments}
                   onChange={handleChange}

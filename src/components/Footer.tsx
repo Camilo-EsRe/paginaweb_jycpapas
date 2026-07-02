@@ -79,17 +79,17 @@ export default function Footer() {
             <div className="text-white font-semibold text-sm uppercase tracking-wider mb-4">Contacto</div>
             <ul className="space-y-3 text-sm">
               <li>
-                <a href="tel:+573004567890" className="hover:text-amber-300 transition-colors">
-                  +57 300 456 7890
+                <a href="tel:+573012384665" className="hover:text-amber-300 transition-colors">
+                  +57 301 238 4665
                 </a>
               </li>
               <li>
-                <a href="mailto:pedidos@papaoro.com" className="hover:text-amber-300 transition-colors">
-                  pedidos@papaoro.com
+                <a href="mailto:pedidos@jycpapas.com" className="hover:text-amber-300 transition-colors">
+                  pedidos@jycpapas.com
                 </a>
               </li>
               <li className="text-stone-500 text-xs leading-relaxed">
-                Zona Industrial Norte, Bodega 14<br />Medellín, Colombia
+                	CALLE 129 SUR 56 47 LC 01<br />Caldas Antioquia, Colombia.
               </li>
             </ul>
 
@@ -115,7 +115,7 @@ export default function Footer() {
             © {year} J&C PAPAS S.A.S. Todos los derechos reservados.
           </p>
           <p className="text-xs text-stone-600">
-            Hecho con pasión familiar en Colombia
+            Hecho por CERIX.
           </p>
         </div>
       </div>

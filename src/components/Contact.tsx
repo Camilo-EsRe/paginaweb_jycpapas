@@ -24,7 +24,7 @@ export default function Contact() {
           <span className="inline-block text-amber-400 text-sm font-semibold uppercase tracking-widest mb-3">
             Contacto y pedidos
           </span>
-          <h2 className="font-montserrat font-extrabold text-4xl lg:text-5xl font-bold text-white mb-5">
+          <h2 className="font-montserrat font-extrabold text-4xl lg:text-5xl text-white mb-5">
             Hablemos de tu próximo pedido
           </h2>
           <div className="w-16 h-1 bg-amber-400 mx-auto rounded-full mb-6" />
@@ -88,7 +88,7 @@ export default function Contact() {
             <div className="mt-8 rounded-2xl overflow-hidden border border-stone-700 h-52">
               <iframe
                 title="Ubicación PapaOro"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253682.46600507393!2d-75.74299155!3d6.25184!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e4428dfb5b8b2b5%3A0x42137cf3b8a27f9f!2sMedell%C3%ADn%2C%20Colombia!5e0!3m2!1ses!2sus!4v1699000000000!5m2!1ses!2sus"
+                src="https://googleusercontent.com/maps.google.com/1"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -104,7 +104,7 @@ export default function Contact() {
               {sent ? (
                 <div className="text-center py-10">
                   <CheckCircle size={48} className="text-green-400 mx-auto mb-4" />
-                  <h3 className="font-montserrat font-extrabold text-2xl font-bold text-white mb-2">Mensaje enviado</h3>
+                  <h3 className="font-montserrat font-extrabold text-2xl text-white mb-2">Mensaje enviado</h3>
                   <p className="text-stone-400 text-sm">Gracias por contactarnos. El equipo de J&C PAPAS se pondrá en contacto contigo pronto.</p>
                   <button
                     onClick={() => { setSent(false); setForm({ name: '', email: '', phone: '', type: '', message: '' }); }}
@@ -115,12 +115,13 @@ export default function Contact() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  <h3 className="font-montserrat font-extrabold text-xl font-bold text-white mb-5">Formulario de contacto</h3>
+                  <h3 className="font-montserrat font-extrabold text-xl text-white mb-5">Formulario de contacto</h3>
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-stone-400 text-xs font-semibold uppercase tracking-wide mb-1.5">Nombre completo *</label>
+                      <label htmlFor="name" className="block text-stone-400 text-xs font-semibold uppercase tracking-wide mb-1.5">Nombre completo *</label>
                       <input
+                        id="name"
                         name="name"
                         value={form.name}
                         onChange={handleChange}
@@ -130,8 +131,9 @@ export default function Contact() {
                       />
                     </div>
                     <div>
-                      <label className="block text-stone-400 text-xs font-semibold uppercase tracking-wide mb-1.5">Teléfono</label>
+                      <label htmlFor="phone" className="block text-stone-400 text-xs font-semibold uppercase tracking-wide mb-1.5">Teléfono</label>
                       <input
+                        id="phone"
                         name="phone"
                         value={form.phone}
                         onChange={handleChange}
@@ -143,8 +145,9 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <label className="block text-stone-400 text-xs font-semibold uppercase tracking-wide mb-1.5">Correo electrónico *</label>
+                    <label htmlFor="email" className="block text-stone-400 text-xs font-semibold uppercase tracking-wide mb-1.5">Correo electrónico *</label>
                     <input
+                      id="email"
                       name="email"
                       value={form.email}
                       onChange={handleChange}
@@ -155,25 +158,35 @@ export default function Contact() {
                     />
                   </div>
 
+                  {/* Bloque del select con corrección de accesibilidad (htmlFor + id) */}
                   <div>
-                    <label className="block text-stone-400 text-xs font-semibold uppercase tracking-wide mb-1.5">Tipo de consulta</label>
-                    <select
-                      name="type"
-                      value={form.type}
-                      onChange={handleChange}
-                      className="w-full bg-stone-900 border border-stone-600 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors"
-                    >
-                      <option value="">Selecciona una opción</option>
-                      <option value="pedido">Hacer un pedido</option>
-                      <option value="distribucion">Distribución / Mayoreo</option>
-                      <option value="personalizado">Producto personalizado</option>
-                      <option value="otro">Otra consulta</option>
-                    </select>
+                    <label htmlFor="type" className="block text-stone-400 text-xs font-semibold uppercase tracking-wide mb-1.5">Tipo de consulta</label>
+                    <div className="relative mt-1">
+                      <select
+                        id="type"
+                        name="type"
+                        value={form.type}
+                        onChange={handleChange}
+                        className="w-full appearance-none bg-stone-900 border border-stone-600 text-white rounded-xl px-4 py-2.5 pr-10 text-sm focus:outline-none focus:border-amber-500 transition-colors cursor-pointer"
+                      >
+                        <option value="" className="bg-stone-900 text-white">Selecciona una opción</option>
+                        <option value="pedido" className="bg-stone-900 text-white">Hacer un pedido</option>
+                        <option value="distribucion" className="bg-stone-900 text-white">Distribución / Mayoreo</option>
+                        <option value="personalizado" className="bg-stone-900 text-white">Producto personalizado</option>
+                        <option value="otro" className="bg-stone-900 text-white">Otra consulta</option>
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
+                        <svg className="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
 
                   <div>
-                    <label className="block text-stone-400 text-xs font-semibold uppercase tracking-wide mb-1.5">Mensaje *</label>
+                    <label htmlFor="message" className="block text-stone-400 text-xs font-semibold uppercase tracking-wide mb-1.5">Mensaje *</label>
                     <textarea
+                      id="message"
                       name="message"
                       value={form.message}
                       onChange={handleChange}

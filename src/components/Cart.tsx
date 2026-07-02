@@ -32,8 +32,10 @@ export default function Cart({ onCheckout }: CartProps) {
                 Tu Pedido
               </h2>
             </div>
+            {/* CORRECCIÓN 1: Botón de cerrar con aria-label */}
             <button
               onClick={() => setIsOpen(false)}
+              aria-label="Cerrar carrito"
               className="p-2 hover:bg-stone-100 rounded-full transition-colors"
             >
               <X size={20} className="text-stone-500" />
@@ -99,26 +101,36 @@ export default function Cart({ onCheckout }: CartProps) {
 
                         {/* Quantity controls + subtotal */}
                         <div className="flex items-center gap-2 mt-2">
+                          {/* CORRECCIÓN 2: Botón disminuir cantidad con aria-label */}
                           <button
                             onClick={() => updateQuantity(product.id, quantity - 1)}
+                            aria-label={`Disminuir cantidad de ${product.name}`}
                             className="w-7 h-7 flex items-center justify-center bg-stone-200 hover:bg-stone-300 rounded-full transition-colors"
                           >
                             <Minus size={14} />
                           </button>
+                          
                           <span className="w-8 text-center font-semibold text-stone-800 text-sm">
                             {quantity}
                           </span>
+                          
+                          {/* CORRECCIÓN 3: Botón aumentar cantidad con aria-label */}
                           <button
                             onClick={() => updateQuantity(product.id, quantity + 1)}
+                            aria-label={`Aumentar cantidad de ${product.name}`}
                             className="w-7 h-7 flex items-center justify-center bg-amber-400 hover:bg-amber-500 text-stone-900 rounded-full transition-colors"
                           >
                             <Plus size={14} />
                           </button>
+                          
                           <span className="ml-auto font-bold text-stone-800 text-sm">
                             {formatCOP(subtotal)}
                           </span>
+                          
+                          {/* CORRECCIÓN 4: Botón eliminar artículo con aria-label */}
                           <button
                             onClick={() => removeItem(product.id)}
+                            aria-label={`Eliminar ${product.name} del carrito`}
                             className="p-1.5 text-red-400 hover:bg-red-50 rounded-full transition-colors"
                           >
                             <Trash2 size={15} />
