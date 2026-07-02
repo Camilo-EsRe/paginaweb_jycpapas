@@ -50,7 +50,7 @@ export default function Navbar() {
           className="flex items-center gap-2 group"
         >
           <img
-            src="/logopotines.jpeg"
+            src="/logoblanco.png"
             alt="J&C Papas"
             className="h-11 w-auto rounded-lg object-contain shadow-md group-hover:scale-105 transition-transform duration-300 ring-1 ring-amber-400/30"
           />

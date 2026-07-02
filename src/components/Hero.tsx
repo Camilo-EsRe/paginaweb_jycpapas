@@ -35,7 +35,7 @@ export default function Hero() {
         {/* Logo */}
         <div className="flex justify-center mb-6 animate-slide-up">
           <img
-            src="/logopotines.jpeg"
+            src="/logoblanco.png"
             alt="J&C Papas"
             className="h-36 sm:h-44 lg:h-52 w-auto object-contain rounded-2xl shadow-2xl ring-2 ring-amber-400/40 drop-shadow-[0_0_32px_rgba(251,191,36,0.35)]"
           />
