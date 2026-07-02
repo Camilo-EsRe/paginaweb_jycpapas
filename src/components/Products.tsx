@@ -9,7 +9,11 @@ const productsData: (Product & { description: string; tag: string; tagColor: str
     image: '/papas9x9.png',
     description: 'Corte clásico y uniforme, ideal para lograr papas crocantes por fuera y suaves por dentro.',
     weight: '2.500 g',
+<<<<<<< HEAD
     tag: 'Clásico',
+=======
+    tag: '29.900 c/u',
+>>>>>>> 888d30b (feat: cambios, hacer pedido)
     tagColor: 'bg-amber-400 text-stone-900',
     benefits: ['Precocción perfecta', 'Congelado IQF', 'Lista en 5 min'],
   },
@@ -19,7 +23,11 @@ const productsData: (Product & { description: string; tag: string; tagColor: str
     image: '/papas12x12.png',
     description: 'Corte más grueso, perfecto para una experiencia de sabor más intensa y una textura más artesanal.',
     weight: '2.500 g',
+<<<<<<< HEAD
     tag: 'Artesanal',
+=======
+    tag: '29.900 c/u',
+>>>>>>> 888d30b (feat: cambios, hacer pedido)
     tagColor: 'bg-stone-800 text-white',
     benefits: ['Con cáscara natural', 'Sabor intenso', 'Textura rústica'],
   },
@@ -29,7 +37,11 @@ const productsData: (Product & { description: string; tag: string; tagColor: str
     image: '/cascos.png',
     description: 'Corte tipo casco conservando la cáscara natural de la papa, ofreciendo un sabor auténtico y una presentación rústica.',
     weight: '2.500 g',
+<<<<<<< HEAD
     tag: 'Especial',
+=======
+    tag: '29.900 c/u',
+>>>>>>> 888d30b (feat: cambios, hacer pedido)
     tagColor: 'bg-green-700 text-white',
     benefits: ['Corte especial', 'Retiene salsas', 'Presentación premium'],
   },
@@ -39,7 +51,11 @@ const productsData: (Product & { description: string; tag: string; tagColor: str
     image: '/papas12x12cascara.png',
     description: 'Corte grueso con cáscara, ideal para quienes buscan una papa más robusta, crocante y con estilo artesanal.',
     weight: '2.500 g',
+<<<<<<< HEAD
     tag: 'Versátil',
+=======
+    tag: '29.900 c/u',
+>>>>>>> 888d30b (feat: cambios, hacer pedido)
     tagColor: 'bg-orange-500 text-white',
     benefits: ['Multiformato', 'Ideal gastronomía', 'Cocción rápida'],
   },
@@ -49,7 +65,11 @@ const productsData: (Product & { description: string; tag: string; tagColor: str
     image: '/papas9x9cascara.png',
     description: 'Pequeños cubos artesanales ideales para bowls, ensaladas calientes, guarniciones y platillos creativos.',
     weight: '2.500 g',
+<<<<<<< HEAD
     tag: 'Versátil',
+=======
+    tag: '29.900 c/u',
+>>>>>>> 888d30b (feat: cambios, hacer pedido)
     tagColor: 'bg-orange-500 text-white',
     benefits: ['Multiformato', 'Ideal gastronomía', 'Cocción rápida'],
   },
