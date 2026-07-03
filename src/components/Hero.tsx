@@ -29,7 +29,7 @@ export default function Hero() {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 bg-amber-400/20 border border-amber-400/40 text-amber-300 text-xs font-semibold uppercase tracking-widest px-4 py-2 rounded-full mb-6 backdrop-blur-sm animate-fade-in">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-          Sabor de casa, calidad de empresa
+          Papas con sabor a papa.
         </div>
 
         {/* Logo */}
@@ -56,7 +56,7 @@ export default function Hero() {
             Ver Nuestros Productos
           </button>
           <button
-            onClick={() => scroll('#contacto')}
+            onClick={() => scroll('#productos')}
             className="px-8 py-4 border-2 border-white/60 text-white font-semibold rounded-full text-base hover:border-amber-300 hover:text-amber-300 transition-all duration-300 backdrop-blur-sm hover:-translate-y-0.5"
           >
             Hacer un Pedido
