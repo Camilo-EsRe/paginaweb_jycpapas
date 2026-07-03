@@ -156,7 +156,7 @@ _Enviado desde la web de J&C PAPAS_`;
                   Registrate y controla tu stock, pedidos y proveedores desde una sola plataforma.
                 </p>
                 <a
-                  href="https://wa.me/573012384665?text=Hola%20J%26C%20PAPAS%2C%20me%20interesa%20el%20sistema%20de%20inventario%20para%20mi%20negocio"
+                  href="https://mini-inventory-manag-9r45.bolt.host"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-stone-900 font-bold px-6 py-3 rounded-xl transition-colors"
