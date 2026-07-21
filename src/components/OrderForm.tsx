@@ -35,7 +35,12 @@ export default function OrderForm({ onClose }: OrderFormProps) {
   const getMinimumDeliveryDate = () => {
     const today = new Date();
     const minDate = new Date(today);
-    minDate.setDate(today.getDate() + getDeliveryOffset(today.getDay()));
+    let offset = getDeliveryOffset(today.getDay());
+    minDate.setDate(today.getDate() + offset);
+    // Si la fecha mínima cae domingo, mover al lunes
+    if (minDate.getDay() === 0) {
+      minDate.setDate(minDate.getDate() + 1);
+    }
     return minDate.toISOString().split('T')[0];
   };
 
@@ -45,9 +50,12 @@ export default function OrderForm({ onClose }: OrderFormProps) {
     const startDate = new Date(today);
     startDate.setDate(today.getDate() + getDeliveryOffset(today.getDay()));
 
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < 21; i++) {
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);
+
+      // Excluir domingos (0) de las fechas disponibles
+      if (date.getDay() === 0) continue;
 
       const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
       const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
