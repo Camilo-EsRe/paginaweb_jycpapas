@@ -25,10 +25,17 @@ export default function OrderForm({ onClose }: OrderFormProps) {
     setForm((prev) => ({ ...prev, deliveryDate: minDate }));
   }, []);
 
+  const getDeliveryOffset = (dayOfWeek: number) => {
+    // 0=Domingo, 5=Viernes, 6=Sábado
+    if (dayOfWeek === 5) return 3; // Viernes → Lunes
+    if (dayOfWeek === 6) return 3; // Sábado → Martes
+    return 2; // Resto de días → +2 días
+  };
+
   const getMinimumDeliveryDate = () => {
     const today = new Date();
     const minDate = new Date(today);
-    minDate.setDate(today.getDate() + 2);
+    minDate.setDate(today.getDate() + getDeliveryOffset(today.getDay()));
     return minDate.toISOString().split('T')[0];
   };
 
@@ -36,7 +43,7 @@ export default function OrderForm({ onClose }: OrderFormProps) {
     const dates: { value: string; label: string }[] = [];
     const today = new Date();
     const startDate = new Date(today);
-    startDate.setDate(today.getDate() + 2);
+    startDate.setDate(today.getDate() + getDeliveryOffset(today.getDay()));
 
     for (let i = 0; i < 14; i++) {
       const date = new Date(startDate);
