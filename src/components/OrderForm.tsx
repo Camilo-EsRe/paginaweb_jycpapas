@@ -5,6 +5,14 @@ import { useCart, CartItem, getItemPrice } from '../context/CartContext';
 const formatCOP = (value: number) =>
   new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value);
 
+// Helper para formatear fechas a YYYY-MM-DD según la hora local (evita desfasajes de zona horaria UTC)
+const formatDateToYYYYMMDD = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 interface OrderFormProps {
   onClose: () => void;
 }
@@ -33,15 +41,17 @@ export default function OrderForm({ onClose }: OrderFormProps) {
   };
 
   const getMinimumDeliveryDate = () => {
-    const today = new Date();
-    const minDate = new Date(today);
-    let offset = getDeliveryOffset(today.getDay());
-    minDate.setDate(today.getDate() + offset);
+    const minDate = new Date();
+    
+    // Sumar directamente los días sin asignar a una variable offset
+    minDate.setDate(minDate.getDate() + getDeliveryOffset(minDate.getDay()));
+
     // Si la fecha mínima cae domingo, mover al lunes
     if (minDate.getDay() === 0) {
       minDate.setDate(minDate.getDate() + 1);
     }
-    return minDate.toISOString().split('T')[0];
+
+    return formatDateToYYYYMMDD(minDate);
   };
 
   const getAvailableDates = () => {
@@ -60,7 +70,7 @@ export default function OrderForm({ onClose }: OrderFormProps) {
       const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
       const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-      const dateString = date.toISOString().split('T')[0];
+      const dateString = formatDateToYYYYMMDD(date);
       const label = `${dayNames[date.getDay()]} ${date.getDate()} de ${monthNames[date.getMonth()]}`;
 
       dates.push({ value: dateString, label });
@@ -139,7 +149,6 @@ _Enviado desde la web de J&C PAPAS_`;
               Completa tus datos para enviar el pedido por WhatsApp
             </p>
           </div>
-          {/* CORRECCIÓN 1: Se añade aria-label para solucionar axe/name-role-value */}
           <button
             onClick={onClose}
             aria-label="Cerrar formulario"
@@ -277,7 +286,6 @@ _Enviado desde la web de J&C PAPAS_`;
               </div>
 
               <div>
-                {/* CORRECCIÓN 2: Se añade htmlFor="deliveryDate" para solucionar axe/forms */}
                 <label htmlFor="deliveryDate" className="flex items-center gap-2 text-stone-700 text-sm font-semibold mb-2">
                   <Calendar size={16} className="text-amber-500" />
                   Fecha de entrega *
