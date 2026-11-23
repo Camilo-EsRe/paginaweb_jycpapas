@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
+import { pushEcommerceEvent } from '../lib/analytics';
 
 export const PRICE_NORMAL = 29900;
 export const PRICE_BULK = 24638;
@@ -40,6 +41,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const addItem = (product: Product) => {
+    pushEcommerceEvent('add_to_cart', {
+      currency: 'COP',
+      items: [
+        {
+          item_id: product.id,
+          item_name: product.name,
+          price: getItemPrice(1),
+          quantity: 1,
+        },
+      ],
+    });
     setItems((prev) => {
       const existing = prev.find((item) => item.product.id === product.id);
       if (existing) {

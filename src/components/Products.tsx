@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { Plus, Check } from 'lucide-react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
-import { useCart, Product } from '../context/CartContext';
+import { useCart, Product, getItemPrice } from '../context/CartContext';
+import { pushEcommerceEvent } from '../lib/analytics';
 
 const productsData: (Product & { description: string; tag: string; tagColor: string; benefits: string[] })[] = [
   {
@@ -58,6 +60,18 @@ const productsData: (Product & { description: string; tag: string; tagColor: str
 export default function Products() {
   const { ref, isVisible } = useIntersectionObserver();
   const { addItem, items } = useCart();
+
+  useEffect(() => {
+    if (!isVisible) return;
+    pushEcommerceEvent('view_item', {
+      currency: 'COP',
+      items: productsData.map((product) => ({
+        item_id: product.id,
+        item_name: product.name,
+        price: getItemPrice(1),
+      })),
+    });
+  }, [isVisible]);
 
   const isInCart = (productId: string) => items.some((item) => item.product.id === productId);
 

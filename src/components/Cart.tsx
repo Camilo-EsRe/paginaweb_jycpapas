@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { X, Plus, Minus, Trash2, ShoppingCart, Tag } from 'lucide-react';
 import { useCart, getItemPrice, PRICE_NORMAL, PRICE_BULK, BULK_THRESHOLD } from '../context/CartContext';
+import { pushEcommerceEvent } from '../lib/analytics';
 
 interface CartProps {
   onCheckout: () => void;
@@ -10,6 +12,21 @@ const formatCOP = (value: number) =>
 
 export default function Cart({ onCheckout }: CartProps) {
   const { items, isOpen, setIsOpen, updateQuantity, removeItem, totalItems, totalPrice } = useCart();
+
+  useEffect(() => {
+    if (!isOpen || items.length === 0) return;
+    pushEcommerceEvent('begin_checkout', {
+      currency: 'COP',
+      value: totalPrice,
+      items: items.map(({ product, quantity }) => ({
+        item_id: product.id,
+        item_name: product.name,
+        price: getItemPrice(quantity),
+        quantity,
+      })),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   if (!isOpen) return null;
 

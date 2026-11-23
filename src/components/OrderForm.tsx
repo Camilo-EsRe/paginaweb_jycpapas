@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, Calendar, User, Phone, MapPin, Package } from 'lucide-react';
 import { useCart, CartItem, getItemPrice } from '../context/CartContext';
+import { pushEcommerceEvent } from '../lib/analytics';
 
 const formatCOP = (value: number) =>
   new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value);
@@ -119,6 +120,17 @@ _Enviado desde la web de J&C PAPAS_`;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    pushEcommerceEvent('generate_lead', {
+      currency: 'COP',
+      value: totalPrice,
+      items: items.map((item: CartItem) => ({
+        item_id: item.product.id,
+        item_name: item.product.name,
+        price: getItemPrice(item.quantity),
+        quantity: item.quantity,
+      })),
+    });
 
     const message = generateWhatsAppMessage();
     const whatsappUrl = `https://wa.me/573012384665?text=${message}`;

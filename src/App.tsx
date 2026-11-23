@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -17,6 +17,14 @@ import { CartProvider } from './context/CartContext';
 
 function App() {
   const [showOrderForm, setShowOrderForm] = useState(false);
+
+  useEffect(() => {
+    if (!window.location.hash) return;
+    // El navegador aún no conoce el elemento al correr el primer render, esperamos al siguiente frame.
+    requestAnimationFrame(() => {
+      document.querySelector(window.location.hash)?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }, []);
 
   const handleCheckout = () => {
     setShowOrderForm(true);
